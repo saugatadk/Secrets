@@ -110,7 +110,7 @@ app.get("/secrets", function(req, res){
     })
     .catch((err)=>{
         console.log(err);        
-    })
+    });
 });
 
 app.get("/submit", function(req, res){
