@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+const path = require("path");
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var findOrCreate = require('mongoose-findorcreate');
 
@@ -13,6 +14,8 @@ const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 
 app.use(session({
     secret: process.env.SECRET,
@@ -61,7 +64,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/secrets"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
+
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
     });
@@ -170,8 +173,9 @@ app.post("/login", function(req, res){
 
 
 
-app.listen(3000 || process.env.PORT, function(req, res){
-    console.log("Server is up and running at Port 3000.");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
 // Export the app as a handler
