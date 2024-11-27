@@ -173,3 +173,6 @@ app.post("/login", function(req, res){
 app.listen(3000 || process.env.PORT, function(req, res){
     console.log("Server is up and running at Port 3000.");
 });
+
+// Export the app as a handler
+module.exports = app;
